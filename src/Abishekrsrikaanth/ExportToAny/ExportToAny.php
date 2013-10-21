@@ -32,7 +32,7 @@ class ExportToAny
 	 * @param string $root_node_name - name of the root node to be converted
 	 * @param array  $data           - array to be converted
 	 *
-	 * @return \DomDocument
+	 * @return string
 	 */
 	public function toXML($file_name, $root_node_name, array $data) {
 		$xml_data = Array2XML::createXML($root_node_name, $data);
