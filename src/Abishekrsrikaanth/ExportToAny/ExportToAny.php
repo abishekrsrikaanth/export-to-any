@@ -37,12 +37,12 @@ class ExportToAny
 	 * @return string
 	 */
 	public function toXML($file_name, $root_node_name, $child_node_name, array $data) {
-		$xmlWriter = new XmlWriter($file_name, $root_node_name, $child_node_name);
-		$xmlWriter->open();
-		$xmlWriter->write($data);
-		$xmlWriter->close();
+		$xmlObj = new \SimpleXMLElement($root_node_name);
+		array_walk_recursive($data, array($xmlObj, 'addChild'));
+		$xml = $xmlObj->saveXML();
+		file_put_contents($file_name, $xml);
 
-		return file_get_contents($file_name);
+		return $xml;
 	}
 
 	/**
