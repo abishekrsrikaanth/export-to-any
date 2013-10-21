@@ -4,6 +4,7 @@ namespace Abishekrsrikaanth\ExportToAny;
 
 use Exporter\Writer\CsvWriter;
 use Exporter\Writer\XlsWriter;
+use Exporter\Writer\XmlWriter;
 use LSS\Array2XML;
 use Abishekrsrikaanth\ExportToAny\helpers\ArrayToHtml;
 
@@ -30,16 +31,18 @@ class ExportToAny
 	 *
 	 * @param        $file_name
 	 * @param string $root_node_name - name of the root node to be converted
+	 * @param        $child_node_name
 	 * @param array  $data           - array to be converted
 	 *
 	 * @return string
 	 */
-	public function toXML($file_name, $root_node_name, array $data) {
-		$xml_data = Array2XML::createXML($root_node_name, $data);
-		$xml_string = $xml_data->saveXML();
-		file_put_contents($file_name, $xml_string);
+	public function toXML($file_name, $root_node_name, $child_node_name, array $data) {
+		$xmlWriter = new XmlWriter($file_name, $root_node_name, $child_node_name);
+		$xmlWriter->open();
+		$xmlWriter->write($data);
+		$xmlWriter->close();
 
-		return $xml_string;
+		return file_get_contents($file_name);
 	}
 
 	/**
