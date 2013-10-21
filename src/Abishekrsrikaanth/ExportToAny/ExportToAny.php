@@ -31,15 +31,14 @@ class ExportToAny
 	 *
 	 * @param        $file_name
 	 * @param string $root_node_name - name of the root node to be converted
-	 * @param        $child_node_name
 	 * @param array  $data           - array to be converted
 	 *
+	 * @internal param $child_node_name
 	 * @return string
 	 */
-	public function toXML($file_name, $root_node_name, $child_node_name, array $data) {
-		$xmlObj = new \SimpleXMLElement($root_node_name);
-		array_walk_recursive($data, array($xmlObj, 'addChild'));
-		$xml = $xmlObj->saveXML();
+	public function toXML($file_name, $root_node_name, array $data) {
+		$xmlObj = Array2XML::createXML($root_node_name, $data);
+		$xml    = $xmlObj->saveXML();
 		file_put_contents($file_name, $xml);
 
 		return $xml;
