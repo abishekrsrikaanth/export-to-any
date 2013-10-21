@@ -28,7 +28,9 @@ class ExportToAnyServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		//
+		$this->app['export-to-any'] = $this->app->share(function ($app) {
+			return new ExportToAny();
+		});
 	}
 
 	/**
