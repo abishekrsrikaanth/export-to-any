@@ -36,9 +36,10 @@ class ExportToAny
 	 */
 	public function toXML($file_name, $root_node_name, array $data) {
 		$xml_data = Array2XML::createXML($root_node_name, $data);
-		file_put_contents($file_name, $xml_data->saveXML());
+		$xml_string = $xml_data->saveXML();
+		file_put_contents($file_name, $xml_string);
 
-		return $xml_data;
+		return $xml_string;
 	}
 
 	/**
