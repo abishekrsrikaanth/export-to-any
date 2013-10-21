@@ -13,37 +13,49 @@ class ExportToAny
 	/**
 	 * Convert an Array to Json
 	 *
+	 * @param       $file_name
 	 * @param array $data
 	 *
 	 * @return string
 	 */
-	public function toJson(array $data) {
-		return json_encode($data);
+	public function toJson($file_name, array $data) {
+		$json_data = json_encode($data);
+		file_put_contents($file_name, $json_data);
+
+		return $json_data;
 	}
 
 	/**
 	 * Convert an Array to XML
 	 *
+	 * @param        $file_name
 	 * @param string $root_node_name - name of the root node to be converted
 	 * @param array  $data           - array to be converted
 	 *
 	 * @return \DomDocument
 	 */
-	public function toXML($root_node_name, array $data) {
-		return Array2XML::createXML($root_node_name, $data);
+	public function toXML($file_name, $root_node_name, array $data) {
+		$xml_data = Array2XML::createXML($root_node_name, $data);
+		file_put_contents($file_name, $xml_data);
+
+		return $xml_data;
 	}
 
 	/**
 	 * Convert a 2 dimensional or multi-dimensional array to HTML table. Outputs a HTML Table
 	 *
+	 * @param       $file_name
 	 * @param array $data
 	 *
 	 * @return string
 	 */
-	public function toHTML(array $data) {
-		$obj = new ArrayToHtml();
+	public function toHTML($file_name, array $data) {
+		$obj   = new ArrayToHtml();
+		$table = $obj->getHtml($data);
+		$html  = "<html><body>{content}</body></html>";
+		file_put_contents($file_name, str_replace("{content}", $table, $html));
 
-		return $obj->getHtml($data);
+		return $table;
 	}
 
 	/**
@@ -56,13 +68,15 @@ class ExportToAny
 	 * @param string $escape
 	 * @param bool   $showHeaders
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function toCSV($filename, array $data, $delimiter = ",", $enclosure = "\"", $escape = "\\", $showHeaders = true) {
 		$csvWriter = new CsvWriter($filename, $delimiter, $enclosure, $escape, $showHeaders);
 		$csvWriter->open();
 		$csvWriter->write($data);
 		$csvWriter->close();
+
+		return file_get_contents($filename);
 	}
 
 	/**
@@ -71,6 +85,8 @@ class ExportToAny
 	 * @param       $filename
 	 * @param array $data
 	 * @param bool  $show_headers
+	 *
+	 * @return string
 	 */
 	public function toXLS($filename, array $data, $show_headers = true) {
 		$writer = new XlsWriter($filename, $show_headers);
@@ -78,5 +94,7 @@ class ExportToAny
 
 		$writer->write($data);
 		$writer->close();
+
+		return file_get_contents($filename);
 	}
 }
