@@ -87,17 +87,21 @@ class ExportToAny
 	 * Exports an Array to an XLS file
 	 *
 	 * @param       $filename
+	 * @param array $header
 	 * @param array $data
-	 * @param bool  $show_headers
 	 *
 	 * @return string
 	 */
-	public function toXLS($filename, array $data, $show_headers = true) {
-		$writer = new XlsWriter($filename, $show_headers);
-		$writer->open();
-
-		$writer->write($data);
-		$writer->close();
+	public function toXLS($filename, array $header, array $data) {
+		$handle = fopen($filename, 'w', false);
+		fwrite($handle, "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /><meta name=ProgId content=Excel.Sheet><meta name=Generator content=\"https://github.com/sonata-project/exporter\"></head><body><table>");
+		fwrite($handle, '<tr>');
+		foreach ($data as $value) {
+			fwrite($handle, sprintf('<td>%s</td>', $value));
+		}
+		fwrite($handle, '</tr>');
+		fwrite($handle, "</table></body></html>");
+		fclose($handle);
 
 		return file_get_contents($filename);
 	}
