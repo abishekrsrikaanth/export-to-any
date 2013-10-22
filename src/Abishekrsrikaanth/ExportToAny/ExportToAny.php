@@ -90,26 +90,12 @@ class ExportToAny
 	 * @return string
 	 */
 	public function toXLS($filename, array $header, array $data) {
-		$handle = fopen($filename, 'w', false);
-		fwrite($handle, "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" /><meta name=ProgId content=Excel.Sheet><meta name=Generator content=\"https://github.com/sonata-project/exporter\"></head><body><table>");
-
-		fwrite($handle, '<tr>');
-		foreach ($header as $head) {
-			fwrite($handle, sprintf('<td>%s</td>', $head));
-		}
-		fwrite($handle, '</tr>');
-
+		$handle = fopen($filename, 'w');
+		fputcsv($handle, $header, '\t', '"');
 
 		foreach ($data as $row) {
-			fwrite($handle, '<tr>');
-			foreach ($row as $value) {
-				fwrite($handle, sprintf('<td>%s</td>', $value));
-			}
-			fwrite($handle, '</tr>');
+			fputcsv($handle, $row, '\t', '"');
 		}
-
-
-		fwrite($handle, "</table></body></html>");
 		fclose($handle);
 
 		return file_get_contents($filename);
