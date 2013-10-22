@@ -65,21 +65,20 @@ class ExportToAny
 	 * Exports an Array to a CSV file
 	 *
 	 * @param        $filename
-	 * @param        $data
+	 * @param array  $header
+	 * @param array  $data
 	 * @param string $delimiter
-	 * @param string $enclosure
-	 * @param string $escape
-	 * @param bool   $showHeaders
 	 *
 	 * @return string
 	 */
-	public function toCSV($filename, array $data, $delimiter = ",", $enclosure = "\"", $escape = "\\", $showHeaders = true) {
-		$csvWriter = new CsvWriter($filename, $delimiter, $enclosure, $escape, $showHeaders);
-		$csvWriter->open();
+	public function toCSV($filename, array $header, array $data, $delimiter = ',') {
+		$handle = fopen($filename, 'w');
+		fputcsv($handle, $header, $delimiter);
+
 		foreach ($data as $row) {
-			$csvWriter->write($row);
+			fputcsv($handle, $row, $delimiter);
 		}
-		$csvWriter->close();
+		fclose($handle);
 
 		return file_get_contents($filename);
 	}
