@@ -12,8 +12,7 @@
     "require": {
         "php": ">=5.3.0",
         "illuminate/support": "4.x",
-        "openlss/lib-array2xml": "dev-master",
-        "sonata-project/exporter": "dev-master"
+        "openlss/lib-array2xml": "dev-master"
     },
     "autoload": {
         "psr-0": {

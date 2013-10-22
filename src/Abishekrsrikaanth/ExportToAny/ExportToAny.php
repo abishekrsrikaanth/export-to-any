@@ -2,9 +2,6 @@
 
 namespace Abishekrsrikaanth\ExportToAny;
 
-use Exporter\Writer\CsvWriter;
-use Exporter\Writer\XlsWriter;
-use Exporter\Writer\XmlWriter;
 use LSS\Array2XML;
 use Abishekrsrikaanth\ExportToAny\helpers\ArrayToHtml;
 
@@ -102,13 +99,15 @@ class ExportToAny
 		}
 		fwrite($handle, '</tr>');
 
-		fwrite($handle, '<tr>');
+
 		foreach ($data as $row) {
+			fwrite($handle, '<tr>');
 			foreach ($row as $value) {
 				fwrite($handle, sprintf('<td>%s</td>', $value));
 			}
+			fwrite($handle, '</tr>');
 		}
-		fwrite($handle, '</tr>');
+
 
 		fwrite($handle, "</table></body></html>");
 		fclose($handle);
