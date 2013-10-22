@@ -76,7 +76,9 @@ class ExportToAny
 	public function toCSV($filename, array $data, $delimiter = ",", $enclosure = "\"", $escape = "\\", $showHeaders = true) {
 		$csvWriter = new CsvWriter($filename, $delimiter, $enclosure, $escape, $showHeaders);
 		$csvWriter->open();
-		$csvWriter->write($data);
+		foreach ($data as $row) {
+			$csvWriter->write($row);
+		}
 		$csvWriter->close();
 
 		return file_get_contents($filename);
