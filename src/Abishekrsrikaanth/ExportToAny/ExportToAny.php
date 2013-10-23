@@ -91,10 +91,10 @@ class ExportToAny
 	 */
 	public function toXLS($filename, array $header, array $data) {
 		$handle = fopen($filename, 'w');
-		fputcsv($handle, $header, '\t', '"');
+		fputcsv($handle, $header, "\t", '"');
 
 		foreach ($data as $row) {
-			fputcsv($handle, $row, '\t', '"');
+			fputcsv($handle, $row, "\t", '"');
 		}
 		fclose($handle);
 
